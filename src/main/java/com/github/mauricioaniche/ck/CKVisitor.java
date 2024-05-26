@@ -118,9 +118,6 @@ public class CKVisitor extends ASTVisitor {
 		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
-		// let's instantiate method level visitors for this current method
-		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentQualifiedMethodName);
-
 		// we add it to the current class we are visiting
 		MethodInTheStack methodInTheStack = new MethodInTheStack();
 		methodInTheStack.result = currentMethod;
