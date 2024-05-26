@@ -10,12 +10,16 @@ import java.util.Collection;
 import java.util.List;
 
 public class FileUtils {
+  private static final String DOT_GIT = String.format("%c.git%c", File.separatorChar, File.separatorChar);
+  private static final String JAVA_EXTENSION = "java";
+  private static final String JAR_EXTENSION = "jar";
+
   public static final List<String> IGNORED_DIRECTORIES = new ArrayList<>();
 
   //Initialize ignored directories with .git.
   static {
     //Use separator so this works on both Windows and Unix-like systems!
-    IGNORED_DIRECTORIES.add(String.format("%c.git%c", File.separatorChar, File.separatorChar));
+    IGNORED_DIRECTORIES.add(DOT_GIT);
   }
 
 	//Get all directories from the directory at the given path.
@@ -34,12 +38,12 @@ public class FileUtils {
 
 	//Get all java class files from the directory at the given path.
 	public static String[] getAllJavaFiles(String path) {
-		return getAllFiles(path, "java");
+		return getAllFiles(path, JAVA_EXTENSION);
 	}
 
 	//Get all jars from the directory at the given path.
 	public static String[] getAllJars(String path) {
-		return getAllFiles(path, "jar");
+		return getAllFiles(path, JAR_EXTENSION);
 	}
 
 	//Get all files from of the given file ending from the directory at the given path.
