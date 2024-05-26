@@ -110,7 +110,6 @@ public class JDTUtils {
 	}
 
 	private static String getMethodSignature(List<?> arguments, List<?> typeArguments) {
-		int argumentCount = arguments != null ? arguments.size() : 0;
 		List<String> parameterTypes = typeArguments.stream().map(object -> object.toString()).collect(Collectors.toList());
 		return formatSignature(parameterTypes);
 	}

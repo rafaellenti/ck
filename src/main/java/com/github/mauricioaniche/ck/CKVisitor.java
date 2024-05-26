@@ -69,11 +69,9 @@ public class CKVisitor extends ASTVisitor {
 				
 		}
 
-		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(className);
-
 		ClassInTheStack classInTheStack = new ClassInTheStack();
 		classInTheStack.result = currentClass;
-		classInTheStack.classLevelMetrics = classLevelMetrics;
+		classInTheStack.classLevelMetrics = instantiateClassLevelMetricVisitors(className);
 
 		classes.push(classInTheStack);
 
@@ -96,23 +94,17 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(MethodDeclaration node) {
-
-		IMethodBinding binding = node.resolveBinding();
 		String currentMethodName = JDTUtils.getMethodFullName(node);
 		String currentQualifiedMethodName = JDTUtils.getQualifiedMethodFullName(node);
 		boolean isConstructor = node.isConstructor();
-		
-		String className = ((currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1) > 0) ? currentQualifiedMethodName.substring(0, (currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1)) : "";
 
 		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, currentQualifiedMethodName, isConstructor, node.getModifiers());
 		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
-		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentQualifiedMethodName);
-
 		MethodInTheStack methodInTheStack = new MethodInTheStack();
 		methodInTheStack.result = currentMethod;
-		methodInTheStack.methodLevelMetrics = methodLevelMetrics;
+		methodInTheStack.methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentQualifiedMethodName);
 		classes.peek().methods.push(methodInTheStack);
 
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
@@ -137,9 +129,6 @@ public class CKVisitor extends ASTVisitor {
 
 
 	public boolean visit(AnonymousClassDeclaration node) {
-		java.util.List<String> stringList = new java.util.ArrayList<>();
-		stringList = stringList.stream().map(string -> string.toString()).collect(java.util.stream.Collectors.toList());
-
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 		if(!classes.peek().methods.isEmpty())
 			classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
@@ -182,11 +171,9 @@ public class CKVisitor extends ASTVisitor {
 		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
-		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentMethodName);
-
 		MethodInTheStack methodInTheStack = new MethodInTheStack();
 		methodInTheStack.result = currentMethod;
-		methodInTheStack.methodLevelMetrics = methodLevelMetrics;
+		methodInTheStack.methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentMethodName);
 		classes.peek().methods.push(methodInTheStack);
 
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
@@ -225,11 +212,9 @@ public class CKVisitor extends ASTVisitor {
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
 		currentClass.setLoc(calculate(node.toString()));
 
-		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(className);
-
 		ClassInTheStack classInTheStack = new ClassInTheStack();
 		classInTheStack.result = currentClass;
-		classInTheStack.classLevelMetrics = classLevelMetrics;
+		classInTheStack.classLevelMetrics = instantiateClassLevelMetricVisitors(className);
 
 		classes.push(classInTheStack);
 

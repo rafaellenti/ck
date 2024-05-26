@@ -16,10 +16,11 @@ public class DependencySorter {
 
         boolean[][] adjacencyMatrix = deriveAdjacencyMatrix(toSort);
 
-        boolean visited[] = new boolean[toSort.size()];
+        boolean[] visited = new boolean[toSort.size()];
+
 
         for (int i = 0; i < toSort.size(); i++)
-            if (visited[i] == false)
+            if (!visited[i])
                 topologicalSort(i, visited, adjacencyMatrix, sortedStack);
 
         return sortedStack.stream().map(i -> toSort.get(i)).collect(Collectors.toList());
