@@ -12,14 +12,9 @@ public class NOCExtras {
 		toAdd = new HashMap<>();
 	}
 
-	/**
-	 * Resets the <code>NOCExtras</code> instance.
-	 * This should ONLY be used in tests so that the state of the instance does not carry over
-	 * between different test classes.
-	 */
-    public static void resetInstance() {
-        instance = null;
-    }
+	public static void resetInstance() {
+			instance = null;
+	}
 	
 	public void plusOne(String clazz){
 		if(clazz.equals("java.lang.Object"))

@@ -12,13 +12,10 @@ import java.util.List;
 public class FileUtils {
   public static final List<String> IGNORED_DIRECTORIES = new ArrayList<>();
 
-  //Initialize ignored directories with .git.
   static {
-    //Use separator so this works on both Windows and Unix-like systems!
     IGNORED_DIRECTORIES.add(String.format("%c.git%c", File.separatorChar, File.separatorChar));
   }
 
-	//Get all directories from the directory at the given path.
 	public static String[] getAllDirs(String path) {
 		try {
 			return Files.walk(Paths.get(path))
@@ -32,17 +29,14 @@ public class FileUtils {
 		}
 	}
 
-	//Get all java class files from the directory at the given path.
 	public static String[] getAllJavaFiles(String path) {
 		return getAllFiles(path, "java");
 	}
 
-	//Get all jars from the directory at the given path.
 	public static String[] getAllJars(String path) {
 		return getAllFiles(path, "jar");
 	}
 
-	//Get all files from of the given file ending from the directory at the given path.
 	private static String[] getAllFiles(String path, String ending){
 		try {
 			return Files.walk(Paths.get(path))
@@ -56,7 +50,6 @@ public class FileUtils {
 		}
 	}
 
-  // Helper method that falls back to false if there is an exception.
   public static boolean isHiddenDir(Path path) {
     try {
       return Files.isHidden(path);
@@ -66,7 +59,6 @@ public class FileUtils {
     }
   }
 
-  //Is the directory an ignored directory (e.g. .git)?
   public static boolean isIgnoredDir(String path, Collection<String> blocked) {
     for (String ignoredDirectory : blocked) {
       if (path.contains(ignoredDirectory)) {

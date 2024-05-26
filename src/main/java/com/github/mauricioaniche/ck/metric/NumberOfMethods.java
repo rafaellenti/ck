@@ -20,7 +20,6 @@ public class NumberOfMethods implements CKASTVisitor, ClassLevelMetric {
 	public void visit(MethodDeclaration node) {
 		methods++;
 
-		// visibility
 		boolean isPublic = Modifier.isPublic(node.getModifiers());
 		boolean isPrivate = Modifier.isPrivate(node.getModifiers());
 		boolean isProtected = Modifier.isProtected(node.getModifiers());
@@ -33,8 +32,6 @@ public class NumberOfMethods implements CKASTVisitor, ClassLevelMetric {
 			protectedMethods++;
 		else
 			defaultMethods++;
-
-		// other characteristics
 
 		boolean isFinal = Modifier.isFinal(node.getModifiers());
 		boolean isSynchronized = Modifier.isSynchronized(node.getModifiers());

@@ -5,8 +5,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class DIT implements CKASTVisitor, ClassLevelMetric {
-
-	int ditCounter = 1; // Object is the father of everyone!
+	int ditCounter = 1;
 
 	@Override
 	public void visit(TypeDeclaration node) {

@@ -42,7 +42,6 @@ public class CK {
 	Callable<List<ClassLevelMetric>> classLevelMetrics;
 	Callable<List<MethodLevelMetric>> methodLevelMetrics;
 
-	// mostly for testing purposes
 	public CK(Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
 		this.useJars = false;
 		this.classLevelMetrics = classLevelMetrics;
@@ -77,21 +76,10 @@ public class CK {
 			);
 	}
 
-	/**
-	 * Convenience method to call ck with a path rather than a string
-	 * @param path The path which contain the java class files to analyse
-	 * @param notifier Handle to process the results and handle errors
-	 */
 	public void calculate(Path path, CKNotifier notifier) {
 		calculate(path.toString(), notifier);
 	}
 
-	/**
-	 * Calculate metrics for the passed javaFilePaths. Uses path to set the environment
-	 * @param path The environment to where the source code is located
-	 * @param notifier Handle to process the results and handle errors
-	 * @param javaFilePaths The files to collect metrics of.
-	 */
 	public void calculate(Path path, CKNotifier notifier, Path... javaFilePaths) {
 		String[] srcDirs = FileUtils.getAllDirs(path.toString());
 		log.info("Found " + srcDirs.length + " src dirs");
@@ -103,7 +91,6 @@ public class CK {
 		
 		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
 
-		// Converts the paths to strings and makes the method support relative paths as well.
 		List<String> strJavaFilePaths = Stream.of(javaFilePaths).map(file -> file.isAbsolute() ? file.toString() : path.resolve(file).toString()).collect(Collectors.toList());
 
 		List<List<String>> partitions = Lists.partition(strJavaFilePaths, maxAtOnce);
@@ -127,7 +114,7 @@ public class CK {
     }
 
 	private int getMaxPartitionBasedOnMemory() {
-		long maxMemory= Runtime.getRuntime().maxMemory() / (1 << 20); // in MiB
+		long maxMemory= Runtime.getRuntime().maxMemory() / (1 << 20);
 
 		if      (maxMemory >= MEMORY_THRESHOLD_2000_MB) return PARTITION_SIZE_400;
 		else if (maxMemory >= MEMORY_THRESHOLD_1500_MB) return PARTITION_SIZE_300;
