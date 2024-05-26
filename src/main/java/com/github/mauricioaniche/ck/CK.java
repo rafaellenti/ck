@@ -25,15 +25,28 @@ public class CK {
 	
 	private static Logger log = Logger.getLogger(CK.class);
 
+	private static int ckZeroNumber = CKMetricsNumbers.ckZero;
+
+	public static final int MAX_CLASSES = 100;
+
+	public static final int MEMORY_THRESHOLD_2000_MB = 2000;
+    public static final int MEMORY_THRESHOLD_1500_MB = 1500;
+    public static final int MEMORY_THRESHOLD_1000_MB = 1000;
+    public static final int MEMORY_THRESHOLD_500_MB = 500;
+    public static final int PARTITION_SIZE_400 = 400;
+    public static final int PARTITION_SIZE_300 = 300;
+    public static final int PARTITION_SIZE_200 = 200;
+    public static final int PARTITION_SIZE_100 = 100;
+    public static final int PARTITION_SIZE_25 = 25;
+
 	Callable<List<ClassLevelMetric>> classLevelMetrics;
 	Callable<List<MethodLevelMetric>> methodLevelMetrics;
 
-	// mostly for testing purposes
 	public CK(Callable<List<ClassLevelMetric>> classLevelMetrics, Callable<List<MethodLevelMetric>> methodLevelMetrics) {
 		this.useJars = false;
 		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
-		this.maxAtOnce = 100;
+		this.maxAtOnce = MAX_CLASSES;
 	}
 
 	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields) {
@@ -42,14 +55,14 @@ public class CK {
 		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics(variablesAndFields);
 
 		this.useJars = useJars;
-		if(maxAtOnce == 0)
+		if(maxAtOnce == ckZeroNumber)
 			this.maxAtOnce = getMaxPartitionBasedOnMemory();
 		else
 			this.maxAtOnce = maxAtOnce;
 	}
 
 	public CK() {
-		this(false, 0, true);
+		this(false, ckZeroNumber, true);
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
@@ -63,21 +76,10 @@ public class CK {
 			);
 	}
 
-	/**
-	 * Convenience method to call ck with a path rather than a string
-	 * @param path The path which contain the java class files to analyse
-	 * @param notifier Handle to process the results and handle errors
-	 */
 	public void calculate(Path path, CKNotifier notifier) {
 		calculate(path.toString(), notifier);
 	}
 
-	/**
-	 * Calculate metrics for the passed javaFilePaths. Uses path to set the environment
-	 * @param path The environment to where the source code is located
-	 * @param notifier Handle to process the results and handle errors
-	 * @param javaFilePaths The files to collect metrics of.
-	 */
 	public void calculate(Path path, CKNotifier notifier, Path... javaFilePaths) {
 		String[] srcDirs = FileUtils.getAllDirs(path.toString());
 		log.info("Found " + srcDirs.length + " src dirs");
@@ -89,7 +91,6 @@ public class CK {
 		
 		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
 
-		// Converts the paths to strings and makes the method support relative paths as well.
 		List<String> strJavaFilePaths = Stream.of(javaFilePaths).map(file -> file.isAbsolute() ? file.toString() : path.resolve(file).toString()).collect(Collectors.toList());
 
 		List<List<String>> partitions = Lists.partition(strJavaFilePaths, maxAtOnce);
@@ -113,13 +114,13 @@ public class CK {
     }
 
 	private int getMaxPartitionBasedOnMemory() {
-		long maxMemory= Runtime.getRuntime().maxMemory() / (1 << 20); // in MiB
+		long maxMemory= Runtime.getRuntime().maxMemory() / (1 << 20);
 
-		if      (maxMemory >= 2000) return 400;
-		else if (maxMemory >= 1500) return 300;
-		else if (maxMemory >= 1000) return 200;
-		else if (maxMemory >=  500) return 100;
-		else                        return 25;
+		if      (maxMemory >= MEMORY_THRESHOLD_2000_MB) return PARTITION_SIZE_400;
+		else if (maxMemory >= MEMORY_THRESHOLD_1500_MB) return PARTITION_SIZE_300;
+		else if (maxMemory >= MEMORY_THRESHOLD_1000_MB) return PARTITION_SIZE_200;
+		else if (maxMemory >=  MEMORY_THRESHOLD_500_MB) return PARTITION_SIZE_100;
+		else                        return PARTITION_SIZE_25;
 	}
 
 }

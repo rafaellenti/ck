@@ -5,8 +5,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class DIT implements CKASTVisitor, ClassLevelMetric {
-
-	int dit = 1; // Object is the father of everyone!
+	int ditCounter = 1;
 
 	@Override
 	public void visit(TypeDeclaration node) {
@@ -20,7 +19,7 @@ public class DIT implements CKASTVisitor, ClassLevelMetric {
 		if (father != null) {
 			String fatherName = father.getQualifiedName();
 			if (fatherName.endsWith("Object")) return;
-			dit++;
+			ditCounter++;
 
 			calculate(father);
 		}
@@ -29,7 +28,7 @@ public class DIT implements CKASTVisitor, ClassLevelMetric {
 
 	@Override
 	public void setResult(CKClassResult result) {
-		result.setDit(dit);
+		result.setDit(ditCounter);
 	}
 
 }

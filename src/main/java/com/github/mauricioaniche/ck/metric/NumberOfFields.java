@@ -39,7 +39,6 @@ public class NumberOfFields implements CKASTVisitor, ClassLevelMetric {
 		else
 			defaultFields++;
 
-		// other characteristics rather than visibility
 		boolean isStatic = Modifier.isStatic(node.getModifiers());
 		boolean isFinal = Modifier.isFinal(node.getModifiers());
 		boolean isSynchronized = Modifier.isSynchronized(node.getModifiers());

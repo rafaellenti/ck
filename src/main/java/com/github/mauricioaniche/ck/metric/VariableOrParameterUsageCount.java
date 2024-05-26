@@ -35,11 +35,11 @@ public class VariableOrParameterUsageCount implements CKASTVisitor, MethodLevelM
 
 	public void visit(SimpleName node) {
 		if(declaredVariables.contains(node.toString())) {
-			String var = node.getIdentifier();
-			if (!occurrences.containsKey(var))
-				occurrences.put(var, -1);
+			String variable = node.getIdentifier();
+			if (!occurrences.containsKey(variable))
+				occurrences.put(variable, -1);
 
-			occurrences.put(var, occurrences.get(var) + 1);
+			occurrences.put(variable, occurrences.get(variable) + 1);
 		}
 	}
 

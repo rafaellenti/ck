@@ -35,18 +35,14 @@ public class CKMethodResult {
 	private int innerClassesQty;
 	private int lambdasQty;
 	private int uniqueWordsQty;
-	//all local field accesses
 	private Map<String, Integer> fieldUsage;
 	private boolean isConstructor;
 	private int modifiers;
 	private int logStatementsQty;
 	private boolean hasJavadoc;
 
-	//All direct invocations of methods
 	private Set<String> methodInvocations;
-	//All direct invocations of methods of the same class
 	private Set<String> methodInvocationsLocal;
-	//All indirect invocations of methods of the same class
 	private Map<String, Set<String>> methodInvocationsIndirectLocal;
 
 	public CKMethodResult(String methodName, String qualifiedMethodName, boolean isConstructor, int modifiers) {
@@ -57,12 +53,6 @@ public class CKMethodResult {
 		this.isVisible = !Modifier.isPrivate(modifiers);
 	}
 
-	/**
-	 * public/static/private and other org.eclipse.jdt.core.dom.Modifier modifiers
-	 *
-	 * @see org.eclipse.jdt.core.dom.Modifier to decode int
-	 * @return
-	 */
 	public int getModifiers() {
 		return modifiers;
 	}
