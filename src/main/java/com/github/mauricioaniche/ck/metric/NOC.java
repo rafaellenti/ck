@@ -13,8 +13,6 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import com.github.mauricioaniche.ck.CKClassResult;
 
 public class NOC implements CKASTVisitor, ClassLevelMetric{
-
-	private String name;
 	private NOCExtras extras;
 	
 	public NOC() {
@@ -26,13 +24,11 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 		ITypeBinding binding = node.resolveBinding();
 		
 		if(binding != null){
-			this.name = binding.getQualifiedName();
 			ITypeBinding father = binding.getSuperclass();
 			if(father != null){
 				this.extras.plusOne(father.getQualifiedName());
 			}
 		} else {
-			this.name = node.getName().getFullyQualifiedName();
 			Type type = node.getSuperclassType();
 			
 			SimpleType castedFatherType = null;
