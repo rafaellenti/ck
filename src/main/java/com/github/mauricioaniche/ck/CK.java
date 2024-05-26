@@ -25,7 +25,7 @@ public class CK {
 	
 	private static Logger log = Logger.getLogger(CK.class);
 
-	private int ckZeroNumber = CKMetricsNumbers.ckZero;
+	private static int ckZeroNumber = CKMetricsNumbers.ckZero;
 
 	public static final int MAX_CLASSES = 100;
 

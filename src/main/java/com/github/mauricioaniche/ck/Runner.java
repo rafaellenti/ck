@@ -8,10 +8,10 @@ import java.util.Map;
 
 public class Runner {
 
-	private int ckZeroNumber = CKMetricsNumbers.ckZero;
-	private int ckOneNumber = CKMetricsNumbers.ckOne;
-	private int ckThree = CKMetricsNumbers.ckThree;
-	private int ckFour = CKMetricsNumbers.ckFour;
+	private static int ckZeroNumber = CKMetricsNumbers.ckZero;
+	private static int ckOneNumber = CKMetricsNumbers.ckOne;
+	private static int ckThree = CKMetricsNumbers.ckThree;
+	private static int ckFour = CKMetricsNumbers.ckFour;
 
 	public static final int JARS_LENGTH = 2;
 	public static final int FILES_PARTITION_LENGTH = 3;

@@ -15,8 +15,8 @@ public class LOCCalculator {
 	private static Logger log = Logger.getLogger(LOCCalculator.class);
 	private static final int COMMENT_END_OFFSET = 2;
 
-	private int ckZeroNumber = CKMetricsNumbers.ckZero;
-	private int ckOneNumber = CKMetricsNumbers.ckOne;
+	private static int ckZeroNumber = CKMetricsNumbers.ckZero;
+	private static int ckOneNumber = CKMetricsNumbers.ckOne;
 	
 	public static int calculate(String sourceCode) {
 		try {
