@@ -10,10 +10,14 @@ import java.util.Collection;
 import java.util.List;
 
 public class FileUtils {
+  private static final String DOT_GIT = String.format("%c.git%c", File.separatorChar, File.separatorChar);
+  private static final String JAVA_EXTENSION = "java";
+  private static final String JAR_EXTENSION = "jar";
+
   public static final List<String> IGNORED_DIRECTORIES = new ArrayList<>();
 
   static {
-    IGNORED_DIRECTORIES.add(String.format("%c.git%c", File.separatorChar, File.separatorChar));
+    IGNORED_DIRECTORIES.add(DOT_GIT);
   }
 
 	public static String[] getAllDirs(String path) {
@@ -30,11 +34,11 @@ public class FileUtils {
 	}
 
 	public static String[] getAllJavaFiles(String path) {
-		return getAllFiles(path, "java");
+		return getAllFiles(path, JAVA_EXTENSION);
 	}
 
 	public static String[] getAllJars(String path) {
-		return getAllFiles(path, "jar");
+		return getAllFiles(path, JAR_EXTENSION);
 	}
 
 	private static String[] getAllFiles(String path, String ending){

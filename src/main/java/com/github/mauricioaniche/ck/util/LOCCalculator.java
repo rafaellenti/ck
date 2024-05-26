@@ -12,6 +12,12 @@ import java.io.InputStreamReader;
 
 public class LOCCalculator {
 
+	private static final String BLOCK_COMMENT_START = "/*";
+	private static final String BLOCK_COMMENT_END = "*/";
+	private static final String LINE_COMMENT = "//";
+
+	private static final String EMPTY_STRING = "";
+
 	private static Logger log = Logger.getLogger(LOCCalculator.class);
 	private static final int COMMENT_END_OFFSET = 2;
 
@@ -37,14 +43,14 @@ public class LOCCalculator {
 
 		while ((line = bReader.readLine()) != null) {
 			line = line.trim();
-			if ("".equals(line) || line.startsWith("//")) {
+			if (EMPTY_STRING.equals(line) || line.startsWith(LINE_COMMENT)) {
 				continue;
 			}
 			if (commentBegan) {
 				if (commentEnded(line)) {
-					line = line.substring(line.indexOf("*/") + COMMENT_END_OFFSET).trim();
+					line = line.substring(line.indexOf(BLOCK_COMMENT_END) + COMMENT_END_OFFSET).trim();
 					commentBegan = false;
-					if ("".equals(line) || line.startsWith("//")) {
+					if (EMPTY_STRING.equals(line) || line.startsWith(LINE_COMMENT)) {
 						continue;
 					}
 				} else
@@ -61,7 +67,7 @@ public class LOCCalculator {
 	}
 
 	private static boolean commentBegan(String line) {
-		int index = line.indexOf("/*");
+		int index = line.indexOf(BLOCK_COMMENT_START);
 		if (index < ckZeroNumber) {
 			return false;
 		}
@@ -79,12 +85,12 @@ public class LOCCalculator {
 	}
 
 	private static boolean commentEnded(String line) {
-		int index = line.indexOf("*/");
+		int index = line.indexOf(BLOCK_COMMENT_END);
 		if (index < ckZeroNumber) {
 			return false;
 		} else {
 			String subString = line.substring(index + COMMENT_END_OFFSET).trim();
-			if ("".equals(subString) || subString.startsWith("//")) {
+			if (EMPTY_STRING.equals(subString) || subString.startsWith(LINE_COMMENT)) {
 				return true;
 			}
 
@@ -94,24 +100,24 @@ public class LOCCalculator {
 
 	private static boolean isSourceCodeLine(String line) {
     line = line.trim();
-    if (line.isEmpty() || line.startsWith("//")) {
+    if (line.isEmpty() || line.startsWith(LINE_COMMENT)) {
         return false;
     }
-    if (line.length() == ckOneNumber || !line.startsWith("/*")) {
+    if (line.length() == ckOneNumber || !line.startsWith(BLOCK_COMMENT_START)) {
         return true;
     }
 
     while (!line.isEmpty()) {
 			line = line.substring(COMMENT_END_OFFSET);  // Remove the opening /*
-			int endCommentPosition = line.indexOf("*/");
+			int endCommentPosition = line.indexOf(BLOCK_COMMENT_END);
 			if (endCommentPosition < ckZeroNumber) {
 				return false;
 			}
 			line = line.substring(endCommentPosition + COMMENT_END_OFFSET).trim();  // Remove the closing */ and trim
-			if (line.isEmpty() || line.startsWith("//")) {
+			if (line.isEmpty() || line.startsWith(LINE_COMMENT)) {
 				return false;
 			}
-			if (!line.startsWith("/*")) {
+			if (!line.startsWith(BLOCK_COMMENT_START)) {
 				return true;
 			}
     }
