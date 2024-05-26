@@ -14,7 +14,6 @@ public class ResultWriter {
             "class",
             "type",
 
-            /* OO Metrics */
             "cbo",
             "cboModified",
             "fanin",
@@ -28,7 +27,6 @@ public class ResultWriter {
             "tcc",
             "lcc",
 
-            /* Method Counting */
             "totalMethodsQty",
             "staticMethodsQty",
             "publicMethodsQty",
@@ -40,7 +38,6 @@ public class ResultWriter {
             "finalMethodsQty",
             "synchronizedMethodsQty",
 
-            /* Field Counting */
             "totalFieldsQty",
             "staticFieldsQty",
             "publicFieldsQty",
@@ -50,7 +47,6 @@ public class ResultWriter {
             "finalFieldsQty",
             "synchronizedFieldsQty",
 
-            /* Others */
             "nosi",
             "loc",
             "returnQty",
@@ -114,16 +110,6 @@ public class ResultWriter {
     private CSVPrinter variablePrinter;
     private CSVPrinter fieldPrinter;
 
-    /**
-     * Initialise a new ResultWriter that writes to the specified files. Begins by
-     * writing CSV headers to each file.
-     * 
-     * @param classFile    Output file for class metrics
-     * @param methodFile   Output file for method metrics
-     * @param variableFile Output file for variable metrics
-     * @param fieldFile    Output file for field metrics
-     * @throws IOException If headers cannot be written
-     */
     public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {
         FileWriter classOut = new FileWriter(classFile);
         this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
@@ -139,13 +125,6 @@ public class ResultWriter {
         }
     }
 
-    /**
-     * Print results for a single class and its methods and fields to the
-     * appropriate CSVPrinters.
-     * 
-     * @param result The CKClassResult
-     * @throws IOException If output files cannot be written to
-     */
     public void printResult(CKClassResult result) throws IOException {
 
         this.classPrinter.printRecord(
@@ -153,7 +132,6 @@ public class ResultWriter {
                 result.getClassName(),
                 result.getType(),
 
-                /* OO Metrics */
                 result.getCbo(),
                 result.getCboModified(),
                 result.getFanin(),
@@ -167,7 +145,6 @@ public class ResultWriter {
                 result.getTightClassCohesion(),
                 result.getLooseClassCohesion(),
 
-                /* Method Counting */
                 result.getNumberOfMethods(),
                 result.getNumberOfStaticMethods(),
                 result.getNumberOfPublicMethods(),
@@ -179,7 +156,6 @@ public class ResultWriter {
                 result.getNumberOfFinalMethods(),
                 result.getNumberOfSynchronizedMethods(),
 
-                /* Field Counting */
                 result.getNumberOfFields(),
                 result.getNumberOfStaticFields(),
                 result.getNumberOfPublicFields(),
@@ -189,7 +165,6 @@ public class ResultWriter {
                 result.getNumberOfFinalFields(),
                 result.getNumberOfSynchronizedFields(),
 
-                /* Others */
                 result.getNosi(),
                 result.getLoc(),
                 result.getReturnQty(),
@@ -261,12 +236,6 @@ public class ResultWriter {
         }
     }
 
-    /**
-     * Flush and close resources that were opened to write results. This method
-     * should be called after all CKClassResults have been calculated and printed.
-     * 
-     * @throws IOException If the resources cannot be closed
-     */
     public void flushAndClose() throws IOException {
         this.classPrinter.flush();
         this.classPrinter.close();

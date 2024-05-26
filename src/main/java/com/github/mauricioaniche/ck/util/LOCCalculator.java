@@ -23,31 +23,6 @@ public class LOCCalculator {
 		}
 	}
 
-
-
-	// Code extracted from https://gist.github.com/shiva27/1432290
-
-	/**
-	 * This class  counts the number of source code lines by excluding comments, in a Java file
-	 * The pseudocode is as below
-	 *
-	 * Initial: Set count = 0, commentBegan = false
-	 * Start: Read line
-	 * Begin: If line is not null, goto Check, else goto End
-	 * Check: If line is a trivial line(after trimming, either begins with // or is ""), goto Start
-	 *        If commentBegan = true
-	 *             if comment has not ended in line
-	 *                goto Start
-	 *              else
-	 *                line = what remains in the line after comment ends
-	 *                commenBegan = false
-	 *                if line is trivial
-	 *                   goto Start
-	 * 		  If line is a valid source code line, count++
-	 *        If comment has begun in the line, set commentBegan = true
-	 *        goto Start
-	 * End: print count
-	 */
 	private static int getNumberOfLines(BufferedReader bReader)
 			throws IOException {
 		int count = 0;
@@ -79,14 +54,7 @@ public class LOCCalculator {
 		return count;
 	}
 
-	/**
-	 *
-	 * @param line
-	 * @return This method checks if in the given line a comment has begun and has not ended
-	 */
 	private static boolean commentBegan(String line) {
-		// If line = /* */, this method will return false
-		// If line = /* */ /*, this method will return true
 		int index = line.indexOf("/*");
 		if (index < 0) {
 			return false;
@@ -104,14 +72,7 @@ public class LOCCalculator {
 		return !commentEnded(line.substring(index + 2));
 	}
 
-	/**
-	 *
-	 * @param line
-	 * @return This method checks if in the given line a comment has ended and no new comment has not begun
-	 */
 	private static boolean commentEnded(String line) {
-		// If line = */ /* , this method will return false
-		// If line = */ /* */, this method will return true
 		int index = line.indexOf("*/");
 		if (index < 0) {
 			return false;
@@ -131,12 +92,6 @@ public class LOCCalculator {
 		}
 	}
 
-	/**
-	 *
-	 * @param line
-	 * @return This method returns true if there is any valid source code in the given input line. It does not worry if comment has begun or not.
-	 * This method will work only if we are sure that comment has not already begun previously. Hence, this method should be called only after {@link #commentBegan(String)} is called
-	 */
 	private static boolean isSourceCodeLine(String line) {
 		boolean isSourceCodeLine = false;
 		line = line.trim();

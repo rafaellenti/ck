@@ -289,10 +289,8 @@ public class Coupling implements CKASTVisitor, ClassLevelMetric, MethodLevelMetr
 	}
 
 	private String cleanClassName(String type) {
-		// remove possible array(s) in the class name
 		String cleanedType = type.replace("[]", "").replace("\\$", ".");
 
-		// remove generics declaration, let's stype with the type
 		if(cleanedType.contains("<"))
 			cleanedType = cleanedType.substring(0, cleanedType.indexOf("<"));
 

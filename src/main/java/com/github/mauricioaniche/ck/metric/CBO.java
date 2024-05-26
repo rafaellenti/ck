@@ -219,10 +219,8 @@ public class CBO implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 	}
 
 	private String cleanClassName(String type) {
-		// remove possible array(s) in the class name
 		String cleanedType = type.replace("[]", "").replace("\\$", ".");
 
-		// remove generics declaration, let's stype with the type
 		if(cleanedType.contains("<"))
 			cleanedType = cleanedType.substring(0, cleanedType.indexOf("<"));
 
@@ -243,10 +241,6 @@ public class CBO implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 		result.setCbo(getValue());
 	}
 
-	// given that some resolvings might fail, we remove types that might
-	// had appeared here twice.
-	// e.g. if the set contains 'A.B.Class' and 'Class', it is likely that
-	// 'Class' == 'A.B.Class'
 	private void clean() {
 		Set<String> singleQualifiedTypes = coupling.stream().filter(x -> !x.contains(".")).collect(Collectors.toSet());
 
