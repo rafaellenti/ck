@@ -73,13 +73,10 @@ public class CKVisitor extends ASTVisitor {
 				
 		}
 
-		// create a set of visitors, just for the current class
-		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(className);
-
 		// store everything in a 'class in the stack' data structure
 		ClassInTheStack classInTheStack = new ClassInTheStack();
 		classInTheStack.result = currentClass;
-		classInTheStack.classLevelMetrics = classLevelMetrics;
+		classInTheStack.classLevelMetrics = instantiateClassLevelMetricVisitors(className);
 
 		// push it to the stack, so we know the current class we are visiting
 		classes.push(classInTheStack);
@@ -109,25 +106,18 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(MethodDeclaration node) {
-
-		IMethodBinding binding = node.resolveBinding();
 		String currentMethodName = JDTUtils.getMethodFullName(node);
 		String currentQualifiedMethodName = JDTUtils.getQualifiedMethodFullName(node);
 		boolean isConstructor = node.isConstructor();
-		
-		String className = ((currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1) > 0) ? currentQualifiedMethodName.substring(0, (currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1)) : "";
 
 		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, currentQualifiedMethodName, isConstructor, node.getModifiers());
 		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
-		// let's instantiate method level visitors for this current method
-		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentQualifiedMethodName);
-
 		// we add it to the current class we are visiting
 		MethodInTheStack methodInTheStack = new MethodInTheStack();
 		methodInTheStack.result = currentMethod;
-		methodInTheStack.methodLevelMetrics = methodLevelMetrics;
+		methodInTheStack.methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentQualifiedMethodName);
 		classes.peek().methods.push(methodInTheStack);
 
 		// and there might be metrics that also use the methoddeclaration node.
@@ -158,9 +148,6 @@ public class CKVisitor extends ASTVisitor {
 
 
 	public boolean visit(AnonymousClassDeclaration node) {
-		java.util.List<String> stringList = new java.util.ArrayList<>();
-		stringList = stringList.stream().map(string -> string.toString()).collect(java.util.stream.Collectors.toList());
-
 		// there might be metrics that use it
 		// (even before an anonymous class is created)
 		classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
@@ -215,13 +202,10 @@ public class CKVisitor extends ASTVisitor {
 		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
 
-		// let's instantiate method level visitors for this current method
-		List<MethodLevelMetric> methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentMethodName);
-
 		// we add it to the current class we are visiting
 		MethodInTheStack methodInTheStack = new MethodInTheStack();
 		methodInTheStack.result = currentMethod;
-		methodInTheStack.methodLevelMetrics = methodLevelMetrics;
+		methodInTheStack.methodLevelMetrics = instantiateMethodLevelMetricVisitors(currentMethodName);
 		classes.peek().methods.push(methodInTheStack);
 
 		// and there might be metrics that also use the methoddeclaration node.
@@ -270,13 +254,10 @@ public class CKVisitor extends ASTVisitor {
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
 		currentClass.setLoc(calculate(node.toString()));
 
-		// create a set of visitors, just for the current class
-		List<ClassLevelMetric> classLevelMetrics = instantiateClassLevelMetricVisitors(className);
-
 		// store everything in a 'class in the stack' data structure
 		ClassInTheStack classInTheStack = new ClassInTheStack();
 		classInTheStack.result = currentClass;
-		classInTheStack.classLevelMetrics = classLevelMetrics;
+		classInTheStack.classLevelMetrics = instantiateClassLevelMetricVisitors(className);
 
 		// push it to the stack, so we know the current class we are visiting
 		classes.push(classInTheStack);

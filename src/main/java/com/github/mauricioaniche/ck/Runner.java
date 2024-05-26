@@ -8,38 +8,48 @@ import java.util.Map;
 
 public class Runner {
 
+	private static int ckZeroNumber = CKMetricsNumbers.ckZero;
+	private static int ckOneNumber = CKMetricsNumbers.ckOne;
+	private static int ckThree = CKMetricsNumbers.ckThree;
+	private static int ckFour = CKMetricsNumbers.ckFour;
+
+	public static final int JARS_LENGTH = 2;
+	public static final int FILES_PARTITION_LENGTH = 3;
+	public static final int FIELDS_RESULT_LENGTH = 4;
+	public static final int OUTPUT_LENGTH = 5;
+
 	public static void main(String[] args) throws IOException {
 
-		if (args == null || args.length < 1) {
+		if (args == null || args.length < ckOneNumber) {
 			System.out.println("Usage java -jar ck.jar <path to project> <use Jars=true|false> <max files per partition, 0=automatic selection> <print variables and fields metrics? True|False> <path to save the output files>");
-			System.exit(1);
+			System.exit(ckOneNumber);
 		}
 
-		String path = args[0];
+		String path = args[ckZeroNumber];
 
 		// use jars?
 		boolean useJars = false;
-		if(args.length >= 2)
-			useJars = Boolean.parseBoolean(args[1]);
+		if(args.length >= JARS_LENGTH)
+			useJars = Boolean.parseBoolean(args[ckOneNumber]);
 
 		// number of files per partition?
-		int maxAtOnce = 0;
-		if(args.length >= 3)
-			maxAtOnce = Integer.parseInt(args[2]);
+		int maxAtOnce = ckZeroNumber;
+		if(args.length >= FILES_PARTITION_LENGTH)
+			maxAtOnce = Integer.parseInt(args[JARS_LENGTH]);
 
 		// variables and field results?
 		boolean variablesAndFields = true;
-		if(args.length >= 4)
-			variablesAndFields = Boolean.parseBoolean(args[3]);
+		if(args.length >= FIELDS_RESULT_LENGTH)
+			variablesAndFields = Boolean.parseBoolean(args[ckThree]);
 		
 		// path where the output csv files will be exported
 		String outputDir = "";
-		if(args.length >= 5)
-			outputDir = args[4];
+		if(args.length >= OUTPUT_LENGTH)
+			outputDir = args[ckFour];
 
     // load possible additional ignored directories
     //noinspection ManualArrayToCollectionCopy
-    for (int i = 5; i < args.length; i++) {
+    for (int i = OUTPUT_LENGTH; i < args.length; i++) {
       FileUtils.IGNORED_DIRECTORIES.add(args[i]);
     }
 

@@ -127,7 +127,6 @@ public class JDTUtils {
 
 	//Helper method to extract the number of arguments from an argument list used to generate the method signature for MethodInvocation nodes
 	private static String getMethodSignature(List<?> arguments, List<?> typeArguments) {
-		int argumentCount = arguments != null ? arguments.size() : 0;
 		List<String> parameterTypes = typeArguments.stream().map(object -> object.toString()).collect(Collectors.toList());
 		return formatSignature(parameterTypes);
 	}
