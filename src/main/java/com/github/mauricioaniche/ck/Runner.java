@@ -8,15 +8,15 @@ import java.util.Map;
 
 public class Runner {
 
-	private int ckZeroNumber = CKMetricsNumbers.ckZero
-	private int ckOneNumber = CKMetricsNumbers.ckOne
-	private int ckThree = CKMetricsNumbers.ckThree
-	private int ckFour = CKMetricsNumbers.ckFour
+	private int ckZeroNumber = CKMetricsNumbers.ckZero;
+	private int ckOneNumber = CKMetricsNumbers.ckOne;
+	private int ckThree = CKMetricsNumbers.ckThree;
+	private int ckFour = CKMetricsNumbers.ckFour;
 
-	public static final int JARS_LENGTH = 2
-	public static final int FILES_PARTITION_LENGTH = 3
-	public static final int FIELDS_RESULT_LENGTH = 4
-	public static final int OUTPUT_LENGTH = 5
+	public static final int JARS_LENGTH = 2;
+	public static final int FILES_PARTITION_LENGTH = 3;
+	public static final int FIELDS_RESULT_LENGTH = 4;
+	public static final int OUTPUT_LENGTH = 5;
 
 	public static void main(String[] args) throws IOException {
 

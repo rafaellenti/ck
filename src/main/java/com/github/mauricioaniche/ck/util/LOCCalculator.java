@@ -11,10 +11,10 @@ import java.io.InputStreamReader;
 public class LOCCalculator {
 
 	private static Logger log = Logger.getLogger(LOCCalculator.class);
-	private static final int COMMENT_END_OFFSET = 2
+	private static final int COMMENT_END_OFFSET = 2;
 
-	private int ckZeroNumber = CKMetricsNumbers.ckZero
-	private int ckOneNumber = CKMetricsNumbers.ckOne
+	private int ckZeroNumber = CKMetricsNumbers.ckZero;
+	private int ckOneNumber = CKMetricsNumbers.ckOne;
 	
 	public static int calculate(String sourceCode) {
 		try {
