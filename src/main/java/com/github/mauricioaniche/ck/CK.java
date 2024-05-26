@@ -25,9 +25,9 @@ public class CK {
 	
 	private static Logger log = Logger.getLogger(CK.class);
 
-	private int ckZeroNumber = CKMetricsNumbers.ckZero
+	private int ckZeroNumber = CKMetricsNumbers.ckZero;
 
-	public static final int MAX_CLASSES = 100
+	public static final int MAX_CLASSES = 100;
 
 	public static final int MEMORY_THRESHOLD_2000_MB = 2000;
     public static final int MEMORY_THRESHOLD_1500_MB = 1500;

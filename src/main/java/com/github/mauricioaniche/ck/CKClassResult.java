@@ -66,7 +66,7 @@ public class CKClassResult {
 	private float tightClassCohesion;
 	private float looseClassCohesion;
 
-	private int ckOneNumber = CKMetricsNumbers.ckOne
+	private int ckOneNumber = CKMetricsNumbers.ckOne;
 
 	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
