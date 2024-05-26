@@ -27,28 +27,24 @@ public class Runner {
 
 		String path = args[ckZeroNumber];
 
-		// use jars?
 		boolean useJars = false;
 		if(args.length >= JARS_LENGTH)
 			useJars = Boolean.parseBoolean(args[ckOneNumber]);
 
-		// number of files per partition?
+
 		int maxAtOnce = ckZeroNumber;
 		if(args.length >= FILES_PARTITION_LENGTH)
 			maxAtOnce = Integer.parseInt(args[JARS_LENGTH]);
 
-		// variables and field results?
 		boolean variablesAndFields = true;
 		if(args.length >= FIELDS_RESULT_LENGTH)
 			variablesAndFields = Boolean.parseBoolean(args[ckThree]);
 		
-		// path where the output csv files will be exported
 		String outputDir = "";
 		if(args.length >= OUTPUT_LENGTH)
 			outputDir = args[ckFour];
 
-    // load possible additional ignored directories
-    //noinspection ManualArrayToCollectionCopy
+
     for (int i = OUTPUT_LENGTH; i < args.length; i++) {
       FileUtils.IGNORED_DIRECTORIES.add(args[i]);
     }
@@ -61,7 +57,6 @@ public class Runner {
 			@Override
 			public void notify(CKClassResult result) {
 				
-				// Store the metrics values from each component of the project in a HashMap
 				results.put(result.getClassName(), result);
 				
 			}
@@ -73,7 +68,6 @@ public class Runner {
 			}
 		});
 		
-		// Write the metrics value of each component in the csv files
 		for(Map.Entry<String, CKClassResult> entry : results.entrySet()){
 			writer.printResult(entry.getValue());
 		}

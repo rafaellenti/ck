@@ -17,6 +17,7 @@ public class JDTUtils {
     private static final String VARARGS_SUFFIX = "[]";
 	private static final String SLASH = "/";
 
+
 	public static int getStartLine(CompilationUnit cu, MethodDeclaration node) {
 		return node.getBody() != null ?
 				cu.getLineNumber(node.getBody().getStartPosition()) :
@@ -29,7 +30,6 @@ public class JDTUtils {
 				cu.getLineNumber(node.getStartPosition());
 	}
 
-	//Get the method name with parameter count and types, e.g. m1/1[int]
 	public static String getMethodFullName(IMethodBinding binding) {
 		String methodName = binding.getName();
 		return methodName + SLASH + getMethodSignature(binding);
@@ -43,7 +43,6 @@ public class JDTUtils {
 		return methodName + SLASH + getMethodSignature(node);
 	}
 
-	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
 	public static String getQualifiedMethodFullName(IMethodBinding binding){
 		String methodName = binding.getName();
 		if(binding.getDeclaringClass() != null){
@@ -52,7 +51,6 @@ public class JDTUtils {
 		return methodName + SLASH + getMethodSignature(binding);
 	}
 
-	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
 	public static String getQualifiedMethodFullName(MethodDeclaration node) {
 		if(node.resolveBinding() != null){
 			return getQualifiedMethodFullName(node.resolveBinding());
@@ -61,7 +59,6 @@ public class JDTUtils {
 		return methodName + SLASH + getMethodSignature(node);
 	}
 
-	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
 	public static String getQualifiedMethodFullName(MethodInvocation node) {
 		IMethodBinding binding = node.resolveMethodBinding();
 		if(binding != null){
@@ -71,7 +68,6 @@ public class JDTUtils {
 		}
 	}
 
-	//Get the fully qualified method name with parameter count and types, e.g. rfc.GO.m1/1[int]
 	public static String getQualifiedMethodFullName(SuperMethodInvocation node) {
 		IMethodBinding binding = node.resolveMethodBinding();
 		if(binding != null){
@@ -82,7 +78,6 @@ public class JDTUtils {
 		return node.getName().getFullyQualifiedName() + SLASH + getMethodSignature(node.arguments(), node.typeArguments());
 	}
 
-	//Get the signature of a method with parameter count and types, e.g. 1[int]
 	public static String getMethodSignature(IMethodBinding node){
 		int parameterCount = node.getParameterTypes()==null ? 0 : node.getParameterTypes().length;
 		List<String> parameterTypes = new ArrayList<>();
@@ -98,7 +93,6 @@ public class JDTUtils {
 		return formatSignature(parameterTypes);
 	}
 
-	//Get the signature of a method with parameter count and types, e.g. 1[int]
 	public static String getMethodSignature(MethodDeclaration node){
 		int parameterCount = node.parameters()==null ? 0 : node.parameters().size();
 		List<String> parameterTypes = new ArrayList<>();
@@ -124,7 +118,6 @@ public class JDTUtils {
 		return formatSignature(parameterTypes);
 	}
 
-	//Helper method to extract the number of arguments from an argument list used to generate the method signature for MethodInvocation nodes
 	private static String getMethodSignature(List<?> arguments, List<?> typeArguments) {
 		int argumentCount = arguments != null ? arguments.size() : 0;
 		List<String> parameterTypes = typeArguments.stream().map(object -> object.toString()).collect(Collectors.toList());
@@ -141,8 +134,6 @@ public class JDTUtils {
 		);
 	}
 
-	//get the simple name from the fragments of a variable or field declaration, e.g. [a=10] -> a
-	//Be aware: the function might return the empty string
 	public static List<String> getVariableName(List<VariableDeclarationFragment> fragments){
 		if (fragments != null)
 			return fragments.stream().map(fragment -> fragment.getName().getIdentifier()).collect(Collectors.toList());

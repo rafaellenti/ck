@@ -66,14 +66,7 @@ public class LOCCalculator {
 		return count;
 	}
 
-	/**
-	 *
-	 * @param line
-	 * @return This method checks if in the given line a comment has begun and has not ended
-	 */
 	private static boolean commentBegan(String line) {
-		// If line = /* */, this method will return false
-		// If line = /* */ /*, this method will return true
 		int index = line.indexOf(BLOCK_COMMENT_START);
 		if (index < ckZeroNumber) {
 			return false;
@@ -91,14 +84,7 @@ public class LOCCalculator {
 		return !commentEnded(line.substring(index + COMMENT_END_OFFSET));
 	}
 
-	/**
-	 *
-	 * @param line
-	 * @return This method checks if in the given line a comment has ended and no new comment has not begun
-	 */
 	private static boolean commentEnded(String line) {
-		// If line = */ /* , this method will return false
-		// If line = */ /* */, this method will return true
 		int index = line.indexOf(BLOCK_COMMENT_END);
 		if (index < ckZeroNumber) {
 			return false;
@@ -112,12 +98,6 @@ public class LOCCalculator {
 		}
 	}
 
-	/**
-	 *
-	 * @param line
-	 * @return This method returns true if there is any valid source code in the given input line. It does not worry if comment has begun or not.
-	 * This method will work only if we are sure that comment has not already begun previously. Hence, this method should be called only after {@link #commentBegan(String)} is called
-	 */
 	private static boolean isSourceCodeLine(String line) {
     line = line.trim();
     if (line.isEmpty() || line.startsWith(LINE_COMMENT)) {

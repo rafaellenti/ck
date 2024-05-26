@@ -15,6 +15,4 @@ public class NumberOfParameters implements CKASTVisitor, MethodLevelMetric{
 	public void setResult(CKMethodResult result) {
 		result.setParametersQty(qty);
 	}
-
-
 }

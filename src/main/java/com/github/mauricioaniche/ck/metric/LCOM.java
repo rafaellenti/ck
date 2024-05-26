@@ -47,15 +47,6 @@ public class LCOM implements CKASTVisitor, ClassLevelMetric {
 	
 	@Override
 	public void setResult(CKClassResult result) {
-		
-		/*
-		 * LCOM = |P| - |Q| if |P| - |Q| > 0
-		 * where
-		 * P = set of all empty set intersections
-		 * Q = set of all nonempty set intersections
-		 */
-		
-		// extracted from https://github.com/dspinellis/ckjm
 		int lcom = 0;
 		for (int i = 0; i < methods.size(); i++)
 		    for (int j = i + 1; j < methods.size(); j++) {
