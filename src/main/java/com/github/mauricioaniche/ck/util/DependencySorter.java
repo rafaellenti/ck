@@ -20,11 +20,11 @@ public class DependencySorter {
 
         // the array will keep a list of nodes we visited before
         // all marked as 'not visited' at the beginning
-        boolean visited[] = new boolean[toSort.size()];
+        boolean[] visited = new boolean[toSort.size()];
 
         // visit all of them, in order
         for (int i = 0; i < toSort.size(); i++)
-            if (visited[i] == false)
+            if (!visited[i])
                 topologicalSort(i, visited, adjacencyMatrix, sortedStack);
 
         return sortedStack.stream().map(i -> toSort.get(i)).collect(Collectors.toList());
