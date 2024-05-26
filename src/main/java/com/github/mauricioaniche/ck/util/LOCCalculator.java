@@ -101,14 +101,8 @@ public class LOCCalculator {
 			if ("".equals(subString) || subString.startsWith("//")) {
 				return true;
 			}
-			if(commentBegan(subString))
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+
+			return !commentBegan(subString);
 		}
 	}
 
@@ -119,43 +113,30 @@ public class LOCCalculator {
 	 * This method will work only if we are sure that comment has not already begun previously. Hence, this method should be called only after {@link #commentBegan(String)} is called
 	 */
 	private static boolean isSourceCodeLine(String line) {
-		boolean isSourceCodeLine = false;
-		line = line.trim();
-		if ("".equals(line) || line.startsWith("//")) {
-			return isSourceCodeLine;
-		}
-		if (line.length() == ckOneNumber) {
-			return true;
-		}
-		int index = line.indexOf("/*");
-		if (index != ckZeroNumber) {
-			return true;
-		} else {
-			while (line.length() > ckZeroNumber) {
-				line = line.substring(index + COMMENT_END_OFFSET);
-				int endCommentPosition = line.indexOf("*/");
-				if (endCommentPosition < ckZeroNumber) {
-					return false;
-				}
-				if (endCommentPosition == line.length() - COMMENT_END_OFFSET) {
-					return false;
-				} else {
-					String subString = line.substring(endCommentPosition + COMMENT_END_OFFSET)
-							.trim();
-					if ("".equals(subString) || subString.indexOf("//") == ckZeroNumber) {
-						return false;
-					} else {
-						if (subString.startsWith("/*")) {
-							line = subString;
-							continue;
-						}
-						return true;
-					}
-				}
+    line = line.trim();
+    if (line.isEmpty() || line.startsWith("//")) {
+        return false;
+    }
+    if (line.length() == ckOneNumber || !line.startsWith("/*")) {
+        return true;
+    }
 
+    while (!line.isEmpty()) {
+			line = line.substring(COMMENT_END_OFFSET);  // Remove the opening /*
+			int endCommentPosition = line.indexOf("*/");
+			if (endCommentPosition < ckZeroNumber) {
+				return false;
 			}
-		}
-		return isSourceCodeLine;
+			line = line.substring(endCommentPosition + COMMENT_END_OFFSET).trim();  // Remove the closing */ and trim
+			if (line.isEmpty() || line.startsWith("//")) {
+				return false;
+			}
+			if (!line.startsWith("/*")) {
+				return true;
+			}
+    }
+
+    return false;
 	}
 
 }
