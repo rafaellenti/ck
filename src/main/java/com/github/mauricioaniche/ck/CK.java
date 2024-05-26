@@ -25,6 +25,20 @@ public class CK {
 	
 	private static Logger log = Logger.getLogger(CK.class);
 
+	private int ckZeroNumber = CKMetricsNumbers.ckZero
+
+	public static final int MAX_CLASSES = 100
+
+	public static final int MEMORY_THRESHOLD_2000_MB = 2000;
+    public static final int MEMORY_THRESHOLD_1500_MB = 1500;
+    public static final int MEMORY_THRESHOLD_1000_MB = 1000;
+    public static final int MEMORY_THRESHOLD_500_MB = 500;
+    public static final int PARTITION_SIZE_400 = 400;
+    public static final int PARTITION_SIZE_300 = 300;
+    public static final int PARTITION_SIZE_200 = 200;
+    public static final int PARTITION_SIZE_100 = 100;
+    public static final int PARTITION_SIZE_25 = 25;
+
 	Callable<List<ClassLevelMetric>> classLevelMetrics;
 	Callable<List<MethodLevelMetric>> methodLevelMetrics;
 
@@ -33,7 +47,7 @@ public class CK {
 		this.useJars = false;
 		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
-		this.maxAtOnce = 100;
+		this.maxAtOnce = MAX_CLASSES;
 	}
 
 	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields) {
@@ -42,14 +56,14 @@ public class CK {
 		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics(variablesAndFields);
 
 		this.useJars = useJars;
-		if(maxAtOnce == 0)
+		if(maxAtOnce == ckZeroNumber)
 			this.maxAtOnce = getMaxPartitionBasedOnMemory();
 		else
 			this.maxAtOnce = maxAtOnce;
 	}
 
 	public CK() {
-		this(false, 0, true);
+		this(false, ckZeroNumber, true);
 	}
 
 	public void calculate(String path, CKNotifier notifier) {
@@ -115,11 +129,11 @@ public class CK {
 	private int getMaxPartitionBasedOnMemory() {
 		long maxMemory= Runtime.getRuntime().maxMemory() / (1 << 20); // in MiB
 
-		if      (maxMemory >= 2000) return 400;
-		else if (maxMemory >= 1500) return 300;
-		else if (maxMemory >= 1000) return 200;
-		else if (maxMemory >=  500) return 100;
-		else                        return 25;
+		if      (maxMemory >= MEMORY_THRESHOLD_2000_MB) return PARTITION_SIZE_400;
+		else if (maxMemory >= MEMORY_THRESHOLD_1500_MB) return PARTITION_SIZE_300;
+		else if (maxMemory >= MEMORY_THRESHOLD_1000_MB) return PARTITION_SIZE_200;
+		else if (maxMemory >=  MEMORY_THRESHOLD_500_MB) return PARTITION_SIZE_100;
+		else                        return PARTITION_SIZE_25;
 	}
 
 }

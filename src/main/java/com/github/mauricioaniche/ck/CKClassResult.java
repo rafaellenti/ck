@@ -66,6 +66,8 @@ public class CKClassResult {
 	private float tightClassCohesion;
 	private float looseClassCohesion;
 
+	private int ckOneNumber = CKMetricsNumbers.ckOne
+
 	public CKClassResult(String file, String className, String type, int modifiers) {
 		this.file = file;
 		this.className = className;
@@ -131,7 +133,7 @@ public class CKClassResult {
 	}
 	
 	public int getCboModified() {
-		if(this.cboModified == -1){
+		if(this.cboModified == -ckOneNumber){
 			CouplingExtras extras = CouplingExtras.getInstance();
 			this.setCboModified(extras.getValueCBOClass(this.className));
 		}
@@ -144,7 +146,7 @@ public class CKClassResult {
 
 	public int getFanin() {
 		
-		if(this.fanin == -1){
+		if(this.fanin == -ckOneNumber){
 			CouplingExtras extras = CouplingExtras.getInstance();
 			this.setFanin(extras.getValueFanInClass(this.className));
 		}
@@ -158,7 +160,7 @@ public class CKClassResult {
 	
 	public int getFanout() {
 		
-		if(this.fanout == -1){
+		if(this.fanout == -ckOneNumber){
 			CouplingExtras extras = CouplingExtras.getInstance();
 			this.setFanout(extras.getValueFanOutClass(this.className));
 		}

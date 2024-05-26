@@ -11,6 +11,10 @@ import java.io.InputStreamReader;
 public class LOCCalculator {
 
 	private static Logger log = Logger.getLogger(LOCCalculator.class);
+	private static final int COMMENT_END_OFFSET = 2
+
+	private int ckZeroNumber = CKMetricsNumbers.ckZero
+	private int ckOneNumber = CKMetricsNumbers.ckOne
 	
 	public static int calculate(String sourceCode) {
 		try {
@@ -19,38 +23,13 @@ public class LOCCalculator {
 			return getNumberOfLines(reader);
 		} catch (IOException e) {
 			log.error("Error when counting lines", e);
-			return 0;
+			return ckZeroNumber;
 		}
 	}
 
-
-
-	// Code extracted from https://gist.github.com/shiva27/1432290
-
-	/**
-	 * This class  counts the number of source code lines by excluding comments, in a Java file
-	 * The pseudocode is as below
-	 *
-	 * Initial: Set count = 0, commentBegan = false
-	 * Start: Read line
-	 * Begin: If line is not null, goto Check, else goto End
-	 * Check: If line is a trivial line(after trimming, either begins with // or is ""), goto Start
-	 *        If commentBegan = true
-	 *             if comment has not ended in line
-	 *                goto Start
-	 *              else
-	 *                line = what remains in the line after comment ends
-	 *                commenBegan = false
-	 *                if line is trivial
-	 *                   goto Start
-	 * 		  If line is a valid source code line, count++
-	 *        If comment has begun in the line, set commentBegan = true
-	 *        goto Start
-	 * End: print count
-	 */
 	private static int getNumberOfLines(BufferedReader bReader)
 			throws IOException {
-		int count = 0;
+		int count = ckZeroNumber;
 		boolean commentBegan = false;
 		String line = null;
 
@@ -61,7 +40,7 @@ public class LOCCalculator {
 			}
 			if (commentBegan) {
 				if (commentEnded(line)) {
-					line = line.substring(line.indexOf("*/") + 2).trim();
+					line = line.substring(line.indexOf("*/") + COMMENT_END_OFFSET).trim();
 					commentBegan = false;
 					if ("".equals(line) || line.startsWith("//")) {
 						continue;
@@ -88,20 +67,20 @@ public class LOCCalculator {
 		// If line = /* */, this method will return false
 		// If line = /* */ /*, this method will return true
 		int index = line.indexOf("/*");
-		if (index < 0) {
+		if (index < ckZeroNumber) {
 			return false;
 		}
 		int quoteStartIndex = line.indexOf("\"");
-		if (quoteStartIndex != -1 && quoteStartIndex < index) {
-			while (quoteStartIndex > -1) {
-				line = line.substring(quoteStartIndex + 1);
+		if (quoteStartIndex != -ckOneNumber && quoteStartIndex < index) {
+			while (quoteStartIndex > -ckOneNumber) {
+				line = line.substring(quoteStartIndex + ckOneNumber);
 				int quoteEndIndex = line.indexOf("\"");
-				line = line.substring(quoteEndIndex + 1);
+				line = line.substring(quoteEndIndex + ckOneNumber);
 				quoteStartIndex = line.indexOf("\"");
 			}
 			return commentBegan(line);
 		}
-		return !commentEnded(line.substring(index + 2));
+		return !commentEnded(line.substring(index + COMMENT_END_OFFSET));
 	}
 
 	/**
@@ -113,10 +92,10 @@ public class LOCCalculator {
 		// If line = */ /* , this method will return false
 		// If line = */ /* */, this method will return true
 		int index = line.indexOf("*/");
-		if (index < 0) {
+		if (index < ckZeroNumber) {
 			return false;
 		} else {
-			String subString = line.substring(index + 2).trim();
+			String subString = line.substring(index + COMMENT_END_OFFSET).trim();
 			if ("".equals(subString) || subString.startsWith("//")) {
 				return true;
 			}
@@ -143,25 +122,25 @@ public class LOCCalculator {
 		if ("".equals(line) || line.startsWith("//")) {
 			return isSourceCodeLine;
 		}
-		if (line.length() == 1) {
+		if (line.length() == ckOneNumber) {
 			return true;
 		}
 		int index = line.indexOf("/*");
-		if (index != 0) {
+		if (index != ckZeroNumber) {
 			return true;
 		} else {
-			while (line.length() > 0) {
-				line = line.substring(index + 2);
+			while (line.length() > ckZeroNumber) {
+				line = line.substring(index + COMMENT_END_OFFSET);
 				int endCommentPosition = line.indexOf("*/");
-				if (endCommentPosition < 0) {
+				if (endCommentPosition < ckZeroNumber) {
 					return false;
 				}
-				if (endCommentPosition == line.length() - 2) {
+				if (endCommentPosition == line.length() - COMMENT_END_OFFSET) {
 					return false;
 				} else {
-					String subString = line.substring(endCommentPosition + 2)
+					String subString = line.substring(endCommentPosition + COMMENT_END_OFFSET)
 							.trim();
-					if ("".equals(subString) || subString.indexOf("//") == 0) {
+					if ("".equals(subString) || subString.indexOf("//") == ckZeroNumber) {
 						return false;
 					} else {
 						if (subString.startsWith("/*")) {
