@@ -120,14 +120,8 @@ public class LOCCalculator {
 			if ("".equals(subString) || subString.startsWith("//")) {
 				return true;
 			}
-			if(commentBegan(subString))
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
+
+			return !commentBegan(subString);
 		}
 	}
 
@@ -138,43 +132,30 @@ public class LOCCalculator {
 	 * This method will work only if we are sure that comment has not already begun previously. Hence, this method should be called only after {@link #commentBegan(String)} is called
 	 */
 	private static boolean isSourceCodeLine(String line) {
-		boolean isSourceCodeLine = false;
-		line = line.trim();
-		if ("".equals(line) || line.startsWith("//")) {
-			return isSourceCodeLine;
-		}
-		if (line.length() == 1) {
-			return true;
-		}
-		int index = line.indexOf("/*");
-		if (index != 0) {
-			return true;
-		} else {
-			while (line.length() > 0) {
-				line = line.substring(index + 2);
-				int endCommentPosition = line.indexOf("*/");
-				if (endCommentPosition < 0) {
-					return false;
-				}
-				if (endCommentPosition == line.length() - 2) {
-					return false;
-				} else {
-					String subString = line.substring(endCommentPosition + 2)
-							.trim();
-					if ("".equals(subString) || subString.indexOf("//") == 0) {
-						return false;
-					} else {
-						if (subString.startsWith("/*")) {
-							line = subString;
-							continue;
-						}
-						return true;
-					}
-				}
+    line = line.trim();
+    if (line.isEmpty() || line.startsWith("//")) {
+        return false;
+    }
+    if (line.length() == 1 || !line.startsWith("/*")) {
+        return true;
+    }
 
+    while (!line.isEmpty()) {
+			line = line.substring(2);  // Remove the opening /*
+			int endCommentPosition = line.indexOf("*/");
+			if (endCommentPosition < 0) {
+				return false;
 			}
-		}
-		return isSourceCodeLine;
+			line = line.substring(endCommentPosition + 2).trim();  // Remove the closing */ and trim
+			if (line.isEmpty() || line.startsWith("//")) {
+				return false;
+			}
+			if (!line.startsWith("/*")) {
+				return true;
+			}
+    }
+
+    return false;
 	}
 
 }
