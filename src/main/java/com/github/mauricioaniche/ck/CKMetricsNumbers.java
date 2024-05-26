@@ -1,3 +1,5 @@
+package com.github.mauricioaniche.ck;
+
 public class CKMetricsNumbers {
     public static int ckZero = 0;
     public static int ckOne = 1;

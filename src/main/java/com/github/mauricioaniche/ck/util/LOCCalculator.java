@@ -1,5 +1,7 @@
 package com.github.mauricioaniche.ck.util;
 
+import com.github.mauricioaniche.ck.CKMetricsNumbers;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
