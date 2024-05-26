@@ -37,8 +37,8 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 			
 			SimpleType castedFatherType = null;
 			
-			if(node.getSuperclassType() instanceof SimpleType)
-				castedFatherType = ((SimpleType) node.getSuperclassType());
+			if(type instanceof SimpleType)
+				castedFatherType = ((SimpleType) type);
 			
 			if(castedFatherType != null){
 				this.extras.plusOne(castedFatherType.getName().getFullyQualifiedName());

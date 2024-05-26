@@ -109,8 +109,6 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	public boolean visit(MethodDeclaration node) {
-
-		IMethodBinding binding = node.resolveBinding();
 		String currentMethodName = JDTUtils.getMethodFullName(node);
 		String currentQualifiedMethodName = JDTUtils.getQualifiedMethodFullName(node);
 		boolean isConstructor = node.isConstructor();
