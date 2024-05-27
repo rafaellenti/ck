@@ -8,11 +8,19 @@ import org.eclipse.jdt.core.dom.MethodInvocation;
 
 public class NumberOfLogStatements implements CKASTVisitor, MethodLevelMetric, ClassLevelMetric {
 
-    private int qty = 0;
+    private int qty = 0;    
 
     public static boolean isLogStatement(String line) {
-        line = line.toLowerCase().trim();
-        return line.matches(".*\\.(at)?(info|warn|debug|error|trace)\\(.*");
+        String lowerCaseLine = line.toLowerCase().trim();
+                
+        String[] logLevels = {"info", "warn", "debug", "error", "trace"};
+        for (String logLevel : logLevels) {
+            if (lowerCaseLine.contains(logLevel)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     @Override

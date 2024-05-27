@@ -59,7 +59,7 @@ public class FileUtils {
     try {
       return Files.isHidden(path);
     } catch (IOException exception) {
-      exception.printStackTrace();
+		System.err.println("Error initializing class/method printers: " + exception.getMessage());		
       return false;
     }
   }

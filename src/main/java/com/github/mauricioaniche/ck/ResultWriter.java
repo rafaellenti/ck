@@ -127,11 +127,13 @@ public class ResultWriter {
                     this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
 
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.err.println("Error initializing variable/field printers: " + e.getMessage());
+                    throw new IOException("Failed to initialize variable/field printers", e);
                 }                
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error initializing class/method printers: " + e.getMessage());
+            throw new IOException("Failed to initialize class/method printers", e);
         }
 
     }
