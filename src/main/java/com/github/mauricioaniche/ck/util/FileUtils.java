@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class FileUtils {
   private static final String DOT_GIT = String.format("%c.git%c", File.separatorChar, File.separatorChar);
@@ -21,14 +22,14 @@ public class FileUtils {
   }
 
 	public static String[] getAllDirs(String path) {
-		try {
-			return Files.walk(Paths.get(path))
+		try (Stream<Path> paths = Files.walk(Paths.get(path))) {
+			return paths
 					.filter(Files::isDirectory)
-          .filter(FileUtils::isHiddenDir)
+					.filter(FileUtils::isHiddenDir)
 					.filter(x -> !isIgnoredDir(x.toAbsolutePath().toString(), IGNORED_DIRECTORIES))
 					.map(x -> x.toAbsolutePath().toString())
 					.toArray(String[]::new);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -41,18 +42,18 @@ public class FileUtils {
 		return getAllFiles(path, JAR_EXTENSION);
 	}
 
-	private static String[] getAllFiles(String path, String ending){
-		try {
-			return Files.walk(Paths.get(path))
+	private static String[] getAllFiles(String path, String ending) {
+		try (Stream<Path> paths = Files.walk(Paths.get(path))) {
+			return paths
 					.filter(Files::isRegularFile)
 					.filter(x -> !isIgnoredDir(x.toAbsolutePath().toString(), IGNORED_DIRECTORIES))
 					.filter(x -> x.toAbsolutePath().toString().toLowerCase().endsWith(ending))
 					.map(x -> x.toAbsolutePath().toString())
 					.toArray(String[]::new);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
+	}	
 
   public static boolean isHiddenDir(Path path) {
     try {

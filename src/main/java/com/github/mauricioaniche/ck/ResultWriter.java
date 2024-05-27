@@ -111,17 +111,21 @@ public class ResultWriter {
     private CSVPrinter fieldPrinter;
 
     public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {
-        FileWriter classOut = new FileWriter(classFile);
-        this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
-        FileWriter methodOut = new FileWriter(methodFile);
-        this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
-
         this.variablesAndFields = variablesAndFields;
-        if(variablesAndFields) {
-            FileWriter variableOut = new FileWriter(variableFile);
-            this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
-            FileWriter fieldOut = new FileWriter(fieldFile);
-            this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+
+        try (FileWriter classOut = new FileWriter(classFile)) {            
+            this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
+            FileWriter methodOut = new FileWriter(methodFile);
+            this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
+            
+            if(variablesAndFields) {
+                FileWriter variableOut = new FileWriter(variableFile);
+                this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+                FileWriter fieldOut = new FileWriter(fieldFile);
+                this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception as needed
         }
     }
 

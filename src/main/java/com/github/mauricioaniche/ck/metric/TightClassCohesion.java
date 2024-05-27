@@ -99,7 +99,7 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
             result.setTightClassCohesion(-1);
             result.setLooseClassCohesion(-1);
         } else {
-            float np = result.getVisibleMethods().size() * (result.getVisibleMethods().size() - 1);
+            float np = (float) result.getVisibleMethods().size() * (result.getVisibleMethods().size() - 1);
 
             Set<ImmutablePair<String, String>> directConnections = getDirectConnections(result);
             result.setTightClassCohesion(directConnections.size() / np);

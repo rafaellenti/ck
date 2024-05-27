@@ -51,7 +51,7 @@ public class CK {
 
 	public CK(boolean useJars, int maxAtOnce, boolean variablesAndFields) {
 		MetricsFinder finder = new MetricsFinder();
-		this.classLevelMetrics = () -> finder.allClassLevelMetrics();
+		this.classLevelMetrics = finder::allClassLevelMetrics;
 		this.methodLevelMetrics = () -> finder.allMethodLevelMetrics(variablesAndFields);
 
 		this.useJars = useJars;
