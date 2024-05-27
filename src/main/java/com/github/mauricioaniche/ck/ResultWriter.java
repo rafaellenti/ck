@@ -111,11 +111,12 @@ public class ResultWriter {
     private CSVPrinter fieldPrinter;
 
     public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {
-        this.variablesAndFields = variablesAndFields;
+        this.variablesAndFields = variablesAndFields;       
 
-        try (FileWriter classOut = new FileWriter(classFile)) {            
+        try (FileWriter classOut = new FileWriter(classFile);
+            FileWriter methodOut = new FileWriter(methodFile)) {
+            
             this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
-            FileWriter methodOut = new FileWriter(methodFile);
             this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
             
             if(variablesAndFields) {
@@ -125,8 +126,9 @@ public class ResultWriter {
                 this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
             }
         } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception as needed
+            e.printStackTrace();
         }
+
     }
 
     public void printResult(CKClassResult result) throws IOException {
