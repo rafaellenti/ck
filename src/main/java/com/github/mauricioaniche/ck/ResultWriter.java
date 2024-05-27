@@ -120,10 +120,15 @@ public class ResultWriter {
             this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
             
             if(variablesAndFields) {
-                FileWriter variableOut = new FileWriter(variableFile);
-                this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
-                FileWriter fieldOut = new FileWriter(fieldFile);
-                this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+                try (FileWriter variableOut = new FileWriter(variableFile);
+                    FileWriter fieldOut = new FileWriter(fieldFile)) {
+
+                    this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));                
+                    this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }                
             }
         } catch (IOException e) {
             e.printStackTrace();
